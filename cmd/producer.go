@@ -16,12 +16,14 @@ limitations under the License.
 package cmd
 
 import (
+	"github.com/sirupsen/logrus"
 	"kafkapoc/services"
 
 	"github.com/spf13/cobra"
 )
 
 var message string
+var topicName string
 
 // producerCmd represents the producer command
 var producerCmd = &cobra.Command{
@@ -34,7 +36,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		services.Produce(brokers, message)
+		check()
+		services.Produce(brokers, message, topicName)
 	},
 }
 
@@ -47,7 +50,22 @@ func init() {
 	// and all subcommands, e.g.:
 	// producerCmd.PersistentFlags().String("foo", "", "A help for foo")
 	producerCmd.PersistentFlags().StringVar(&message, "message", "Hello world", "Message data to be sent via the kafka topic")
+	producerCmd.PersistentFlags().StringVar(&topicName, "topic", "test", "Topic to which message has to be sent")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// producerCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func check() {
+	exists := false
+	// checking if provided topic exists in predefined topic
+	for _, tp := range topicList {
+		if topicName == tp {
+			exists=true
+			logrus.Infof("Found %s", topicName)
+		}
+	}
+	if !exists {
+		logrus.Errorf("Topic used %s does not exist in the pre-defined topics", topicName)
+	}
 }

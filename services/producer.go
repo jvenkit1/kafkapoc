@@ -9,8 +9,7 @@ func init() {
 	logrus.Info("Inside init function")
 }
 
-func Produce(brokers []string, consumerMessage string) {
-	logrus.Info("Inside Produce function")
+func Produce(brokers []string, consumerMessage string, topicName string) {
 
 	config := sarama.NewConfig()
 	config.Producer.Partitioner=sarama.NewRandomPartitioner
@@ -28,7 +27,7 @@ func Produce(brokers []string, consumerMessage string) {
 		logrus.WithError(err).Error("Failed generating a producer instance")
 	}
 	msg := &sarama.ProducerMessage{
-		Topic: "testtopic",
+		Topic: topicName,
 		Value: sarama.StringEncoder(consumerMessage),
 	}
 
@@ -36,9 +35,11 @@ func Produce(brokers []string, consumerMessage string) {
 	if err != nil {
 		logrus.WithError(err).Error("Failed to send a message")
 	}
+
 	logrus.WithFields(logrus.Fields{
 		"Partition": partition,
 		"Offset": offset,
 		"Topic": msg.Topic,
+		"Message": consumerMessage,
 	}).Info("Sent message")
 }

@@ -1,2 +1,5 @@
 kafka.brokers:
   - "0.0.0.0:9092"
+kafka.topics:
+  - "test"
+  - "randomtopic"

@@ -7,16 +7,14 @@ import (
 	"os/signal"
 )
 
-func Consume(brokers []string) {
+func Consume(brokers []string, topics []string) {
 	logrus.Info("Inside consumer function")
 	config := cluster.NewConfig()
-
-	topics := []string{"testtopic"}
 	//topic := topics[0]
 
 	// SARAMA-CLUSTER CONSUMER IMPLEMENTATION
 
-	consumer, err := cluster.NewConsumer(brokers, "test", topics, config)
+	consumer, err := cluster.NewConsumer(brokers, "cgroup1", topics, config)
 	if err != nil {
 		logrus.WithError(err).Error("Error creating a consumer instance")
 	}

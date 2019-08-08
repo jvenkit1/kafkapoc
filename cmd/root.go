@@ -17,6 +17,7 @@ package cmd
 
 import (
   "fmt"
+  "github.com/sirupsen/logrus"
   "github.com/spf13/cobra"
   "os"
 
@@ -25,7 +26,7 @@ import (
 
 
 var cfgFile string
-var brokers []string
+var brokers, topicList []string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -89,5 +90,11 @@ func initConfig() {
   }
 
   brokers = viper.GetStringSlice("kafka.brokers")
+  topicList = viper.GetStringSlice("kafka.topics")
+
+  logrus.WithFields(logrus.Fields{
+    "Brokers": brokers,
+    "Topics": topicList,
+  }).Info("Printing viper metadata")
 }
 
