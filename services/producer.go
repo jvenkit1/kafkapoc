@@ -9,10 +9,8 @@ func init() {
 	logrus.Info("Inside init function")
 }
 
-func Produce() {
+func Produce(brokers []string, consumerMessage string) {
 	logrus.Info("Inside Produce function")
-
-	brokers := []string{"0.0.0.0:9092"}
 
 	config := sarama.NewConfig()
 	config.Producer.Partitioner=sarama.NewRandomPartitioner
@@ -31,7 +29,7 @@ func Produce() {
 	}
 	msg := &sarama.ProducerMessage{
 		Topic: "testtopic",
-		Value: sarama.StringEncoder("Hello World"),
+		Value: sarama.StringEncoder(consumerMessage),
 	}
 
 	partition, offset, err := p2.SendMessage(msg)

@@ -7,12 +7,10 @@ import (
 	"os/signal"
 )
 
-func Consume() {
+func Consume(brokers []string) {
 	logrus.Info("Inside consumer function")
 	config := cluster.NewConfig()
 
-
-	brokers := []string{"0.0.0.0:9092"}
 	topics := []string{"testtopic"}
 	//topic := topics[0]
 
