@@ -14,3 +14,9 @@ To run Kafka consumer
 ```text
 go run main.go consumer
 ```
+
+
+#Todo:
+1. Modify and test various partitioning schemes
+2. Hands on with Sharding
+3. General Sarama optimizations
